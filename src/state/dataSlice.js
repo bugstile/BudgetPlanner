@@ -8,17 +8,15 @@ const defaultState = {
   categories: [],
 };
 
-const initialState = {
-  data: (() => {
-    try {
-      const storedData = localStorage.getItem(DATA_KEY);
-      return storedData ? JSON.parse(storedData) : defaultState;
-    } catch (error) {
-      console.error("Error parsing JSON from localStorage:", error);
-      return defaultState;
-    }
-  })(),
-};
+const initialState = (() => {
+  try {
+    const storedData = localStorage.getItem(DATA_KEY);
+    return storedData ? JSON.parse(storedData) : defaultState;
+  } catch (error) {
+    console.error("Error parsing JSON from localStorage:", error);
+    return defaultState;
+  }
+})();
 
 const dataSlice = createSlice({
   name: "data",
@@ -33,7 +31,7 @@ const dataSlice = createSlice({
       localStorage.setItem(DATA_KEY, JSON.stringify(state));
     },
     setGoals: (state, action) => {
-      state.goals = action.goals;
+      state.goals = action.payload;
       localStorage.setItem(DATA_KEY, JSON.stringify(state));
     },
     setCategories: (state, action) => {

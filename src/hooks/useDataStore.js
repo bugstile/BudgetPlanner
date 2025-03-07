@@ -28,7 +28,7 @@ const useDataStore = () => {
       const updatedExpenses = [...dataState.expenses, expenseWithId];
       dispatch(setExpenses(updatedExpenses));
     },
-    [dispatch]
+    [dispatch, dataState]
   );
 
   const editExpense = useCallback(
@@ -38,7 +38,7 @@ const useDataStore = () => {
       );
       dispatch(setExpenses(updatedExpenses));
     },
-    [dispatch]
+    [dispatch, dataState]
   );
 
   const deleteExpense = useCallback(
@@ -48,11 +48,13 @@ const useDataStore = () => {
       );
       dispatch(setExpenses(filteredExpenses));
     },
-    [dispatch]
+    [dispatch, dataState]
   );
 
   const addGoal = useCallback(
     (goal) => {
+      console.log(dataState);
+
       const goalWithId = {
         ...goal,
         id: generateID(dataState.goals.map((goa) => goa.id)),
@@ -60,7 +62,7 @@ const useDataStore = () => {
       const updatedGoals = [...dataState.goals, goalWithId];
       dispatch(setGoals(updatedGoals));
     },
-    [dispatch]
+    [dispatch, dataState]
   );
 
   const editGoal = useCallback(
@@ -70,7 +72,7 @@ const useDataStore = () => {
       );
       dispatch(setGoals(updatedGoals));
     },
-    [dispatch]
+    [dispatch, dataState]
   );
 
   const deleteGoal = useCallback(
@@ -80,7 +82,7 @@ const useDataStore = () => {
       );
       dispatch(setGoals(filteredGoals));
     },
-    [dispatch]
+    [dispatch, dataState]
   );
 
   const addCategory = useCallback(
@@ -92,7 +94,7 @@ const useDataStore = () => {
       const updatedCategories = [...dataState.categories, categoryID];
       dispatch(setCategories(updatedCategories));
     },
-    [dispatch]
+    [dispatch, dataState]
   );
 
   const editCategory = useCallback(
@@ -102,7 +104,7 @@ const useDataStore = () => {
       );
       dispatch(setCategories(updatedCategories));
     },
-    [dispatch]
+    [dispatch, dataState]
   );
 
   const deleteCategory = useCallback(
@@ -112,7 +114,7 @@ const useDataStore = () => {
       );
       dispatch(setCategories(filteredCategories));
     },
-    [dispatch]
+    [dispatch, dataState]
   );
 
   return {
