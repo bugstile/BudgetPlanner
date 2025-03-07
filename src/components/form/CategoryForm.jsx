@@ -39,7 +39,7 @@ export default function CategoryForm() {
       }
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 pb-4" >
         <FormField
           control={form.control}
           name="category"
@@ -50,13 +50,20 @@ export default function CategoryForm() {
                 <Input placeholder="Category" {...field} />
               </FormControl>
               <FormDescription>
-                This is your expense category.
+                Write the name of your category.
               </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Input type="color" {...register("color")}/>
+        <FormItem className="flex flex-col">
+          <FormLabel className="m-0">Pick a color from the wheel below to match your category</FormLabel>
+          <input className="h-8 m-0 py-0" type="color" {...register("color")}/>
+          <FormDescription>
+            Click the box to start selecting your color.
+          </FormDescription>
+        </FormItem>
+        
 
         <Button type="submit">Submit</Button>
       </form>
