@@ -9,7 +9,15 @@ const defaultState = {
 };
 
 const initialState = {
-  data: JSON.parse(localStorage.getItem(DATA_KEY) || "") || defaultState,
+  data: (() => {
+    try {
+      const storedData = localStorage.getItem(DATA_KEY);
+      return storedData ? JSON.parse(storedData) : defaultState;
+    } catch (error) {
+      console.error("Error parsing JSON from localStorage:", error);
+      return defaultState;
+    }
+  })(),
 };
 
 const dataSlice = createSlice({
@@ -18,19 +26,19 @@ const dataSlice = createSlice({
   reducers: {
     setPay: (state, action) => {
       state.pay = action.payload;
-      localStorage.setItem(DATA_KEY, state);
+      localStorage.setItem(DATA_KEY, JSON.stringify(state));
     },
     setExpenses: (state, action) => {
       state.expenses = action.payload;
-      localStorage.setItem(DATA_KEY, state);
+      localStorage.setItem(DATA_KEY, JSON.stringify(state));
     },
     setGoals: (state, action) => {
       state.goals = action.goals;
-      localStorage.setItem(DATA_KEY, state);
+      localStorage.setItem(DATA_KEY, JSON.stringify(state));
     },
     setCategories: (state, action) => {
       state.categories = action.payload;
-      localStorage.setItem(DATA_KEY, state);
+      localStorage.setItem(DATA_KEY, JSON.stringify(state));
     },
   },
 });
@@ -38,4 +46,4 @@ const dataSlice = createSlice({
 export const { setPay, setExpenses, setGoals, setCategories } =
   dataSlice.actions;
 
-export default dataSlice;
+export default dataSlice.reducer;
