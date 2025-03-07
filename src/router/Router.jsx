@@ -1,5 +1,5 @@
 import DashboardLayout from "@/layouts/DashboardLayout";
-import OverviewPage from "@/pages/Dashboard";
+import OverviewPage from "@/pages/OverviewPage";
 import {
   createBrowserRouter,
   createRoutesFromElements,
