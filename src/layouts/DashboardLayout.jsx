@@ -1,6 +1,7 @@
 import Header from "@/components/dashboard/Header";
 import Sidebar from "@/components/dashboard/Sidebar";
 import { Outlet } from "react-router";
+import PageTransition from "./animations/PageTransition";
 
 export default function DashboardLayout() {
   return (
@@ -8,7 +9,9 @@ export default function DashboardLayout() {
       <Sidebar />
       <div className="w-full">
         <Header />
-        <Outlet />
+        <PageTransition>
+          <Outlet />
+        </PageTransition>
       </div>
     </div>
   );
