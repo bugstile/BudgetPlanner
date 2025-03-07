@@ -20,7 +20,7 @@ const formSchema = z.object({
   color:z.string(),
 })
  
-export default function NewBudgetForm() {
+export default function CategoryForm() {
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
