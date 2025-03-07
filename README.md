@@ -4,3 +4,6 @@ A React dashboard project designed to enhance UX/UI skills, utilizing popular UI
 
 ## Trello
 https://trello.com/b/t6WihFUK/boilerroom-v9-11
+
+## Boiler-Room dokumentet
+https://docs.google.com/document/d/1H4eDuZfrzw68r0HXZTlOL5OC27io28WSMaKc7NazzCg/edit?tab=t.0
