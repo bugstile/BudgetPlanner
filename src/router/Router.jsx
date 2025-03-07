@@ -1,5 +1,5 @@
 import DashboardLayout from "@/layouts/DashboardLayout";
-import Dashboard from "@/pages/Dashboard";
+import OverviewPage from "@/pages/Dashboard";
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -9,7 +9,7 @@ import {
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<DashboardLayout />}>
-      <Route index element={<Dashboard />} />
+      <Route index element={<OverviewPage />} />
     </Route>
   )
 );
