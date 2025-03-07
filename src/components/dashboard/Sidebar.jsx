@@ -29,7 +29,7 @@ const LINKS = [
 
 export default function Sidebar() {
   return (
-    <nav className="px-8 pt-12 w-full max-w-[250px] bg-slate-300 h-screen">
+    <nav className="px-8 pt-12 w-full max-w-[250px] bg-slate-300 min-h-screen">
       <ul className="flex flex-col gap-y-12">
         {LINKS.map((link, index) => {
           return (
