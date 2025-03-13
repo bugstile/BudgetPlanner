@@ -1,9 +1,4 @@
-import {
-  setCategories,
-  setExpenses,
-  setGoals,
-  setPay,
-} from "@/state/dataSlice";
+import { setCategories, setExpenses, setGoals, setPay } from "@/state/dataSlice";
 import { generateID } from "@/utils/helpers";
 import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -43,9 +38,7 @@ const useDataStore = () => {
 
   const deleteExpense = useCallback(
     (expenseId) => {
-      const filteredExpenses = [...dataState.expenses].filter(
-        (exp) => exp.id !== expenseId
-      );
+      const filteredExpenses = [...dataState.expenses].filter((exp) => exp.id !== expenseId);
       dispatch(setExpenses(filteredExpenses));
     },
     [dispatch, dataState]
@@ -53,8 +46,6 @@ const useDataStore = () => {
 
   const addGoal = useCallback(
     (goal) => {
-      console.log(dataState);
-
       const goalWithId = {
         ...goal,
         id: generateID(dataState.goals.map((goa) => goa.id)),
@@ -77,9 +68,7 @@ const useDataStore = () => {
 
   const deleteGoal = useCallback(
     (goalId) => {
-      const filteredGoals = [...dataState.goals].filter(
-        (goa) => goa.id !== goalId
-      );
+      const filteredGoals = [...dataState.goals].filter((goa) => goa.id !== goalId);
       dispatch(setGoals(filteredGoals));
     },
     [dispatch, dataState]
@@ -109,9 +98,7 @@ const useDataStore = () => {
 
   const deleteCategory = useCallback(
     (categoryId) => {
-      const filteredCategories = [...dataState.categories].filter(
-        (cat) => cat.id !== categoryId
-      );
+      const filteredCategories = [...dataState.categories].filter((cat) => cat.id !== categoryId);
       dispatch(setCategories(filteredCategories));
     },
     [dispatch, dataState]
