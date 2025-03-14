@@ -2,10 +2,14 @@ import { setCategories, setExpenses, setGoals, setPay } from "@/state/dataSlice"
 import { generateID } from "@/utils/helpers";
 import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import useEditStore from "./useEditStore";
 
 const useDataStore = () => {
   const dispatch = useDispatch();
   const dataState = useSelector((state) => state.data);
+  const { updateEditingExpense, editingExpense,
+    editingCategory, updateEditingCategory, 
+    editingGoal, updateEditingGoal  } = useEditStore();
 
   const updatePay = useCallback(
     (pay) => {
@@ -39,9 +43,15 @@ const useDataStore = () => {
   const deleteExpense = useCallback(
     (expenseId) => {
       const filteredExpenses = [...dataState.expenses].filter((exp) => exp.id !== expenseId);
+
+      if(editingExpense && expenseId == editingExpense.id){
+        updateEditingExpense(undefined);
+      }
+      
       dispatch(setExpenses(filteredExpenses));
+
     },
-    [dispatch, dataState]
+    [dispatch, dataState, editingExpense]
   );
 
   const addGoal = useCallback(
@@ -74,9 +84,14 @@ const useDataStore = () => {
   const deleteGoal = useCallback(
     (goalId) => {
       const filteredGoals = [...dataState.goals].filter((goa) => goa.id !== goalId);
+
+      if(editingGoal && goalId == editingGoal.id){
+        updateEditingGoal(undefined);
+      }
+
       dispatch(setGoals(filteredGoals));
     },
-    [dispatch, dataState]
+    [dispatch, dataState, editingGoal]
   );
 
   const addCategory = useCallback(
@@ -105,9 +120,14 @@ const useDataStore = () => {
   const deleteCategory = useCallback(
     (categoryId) => {
       const filteredCategories = [...dataState.categories].filter((cat) => cat.id !== categoryId);
+
+      if(editingCategory && categoryId == editingCategory.id){
+        updateEditingCategory(undefined);
+      }
+
       dispatch(setCategories(filteredCategories));
     },
-    [dispatch, dataState]
+    [dispatch, dataState, editingCategory]
   );
 
   return {

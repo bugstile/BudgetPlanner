@@ -29,7 +29,7 @@ const formSchema = z.object({
   totalAmount: z.number().positive(),
 });
 
-export default function Spendings( {editingExpense} ) {
+export default function SpendingsForm( {editingExpense} ) {
   const { addExpense, editExpense } = useDataStore();
   const { updateEditingExpense } = useEditStore();
 
@@ -43,7 +43,6 @@ export default function Spendings( {editingExpense} ) {
   });
 
   const { reset, formState:{errors} } = form;
-  console.log(errors);
 
   useEffect(() => {
     if (editingExpense) {
@@ -64,10 +63,6 @@ export default function Spendings( {editingExpense} ) {
       spendingCategory: 'Games',
       totalAmount: 1000,
     });
-  }
-
-  function onSubmit(data) {
-    addExpense(data);
   }
 
   return (
