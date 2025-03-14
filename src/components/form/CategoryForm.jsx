@@ -51,11 +51,9 @@ export default function CategoryForm({editingCategory}) {
             addCategory(data);
           }
           reset({
-            defaultValues: {
               category: "",
               color:"",
               id:"-1",
-            },
           });
         }
       
