@@ -15,8 +15,7 @@ A dynamic and interactive React dashboard project designed to enhance UX/UI skil
 
 1. **Clone the Repository:**  
    ```bash  
-   git clone <repository-url>  
-   cd ReactDashboard  
+   git clone https://github.com/Team-Umea/ReactDashboard.git  
    ```  
 
 2. **Install Dependencies:**  
