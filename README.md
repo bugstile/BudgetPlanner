@@ -1,7 +1,3 @@
-Here’s a polished and more structured README file for your project:  
-
----
-
 # **ReactDashboard**  
 
 A dynamic and interactive React dashboard project designed to enhance UX/UI skills, leveraging modern UI frameworks like **Tailwind CSS**. The project integrates **React Router** for navigation and **Redux Toolkit** for state management, allowing users to track their finances, set savings goals, and organize expenses by category.  
