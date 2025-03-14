@@ -1,9 +1,6 @@
-"use client";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -16,10 +13,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { getFutureDateString, getTodayString } from "@/utils/helpers";
 import useDataStore from "@/hooks/useDataStore";
+import useEditStore from "@/hooks/useEditStore";
 import { useEffect } from "react";
 
 const formSchema = z
   .object({
+    id: z.string(),
     startDate: z.string().refine((date) => !isNaN(Date.parse(date)), {
       message: "startDate must be a valid date",
     }),
@@ -41,19 +40,41 @@ const formSchema = z
     }
   );
 
-export default function GoalsForm() {
-  const { addGoal } = useDataStore();
+export default function GoalsForm({ editingGoal }) {
+  const { addGoal, editGoal } = useDataStore();
+  const { updateEditingGoal } = useEditStore();
+
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      id: "-1",
       startDate: getTodayString(),
       endDate: getFutureDateString(30),
       target: 1000,
     },
   });
 
+  const { reset } = form;
+
+  useEffect(() => {
+    if (editingGoal) {
+      reset(editingGoal);
+    }
+  }, [editingGoal, reset]);
+
   function onSubmit(data) {
-    addGoal(data);
+    if (editingGoal) {
+      editGoal({ ...data, id: editingGoal.id });
+      updateEditingGoal(undefined);
+    } else {
+      addGoal(data);
+    }
+    reset({
+      id: "-1",
+      startDate: getTodayString(),
+      endDate: getFutureDateString(30),
+      target: 1000,
+    });
   }
 
   return (
@@ -106,7 +127,7 @@ export default function GoalsForm() {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <Button type="submit">{editingGoal ? "Update goal" : "Add goal"}</Button>
       </form>
     </Form>
   );

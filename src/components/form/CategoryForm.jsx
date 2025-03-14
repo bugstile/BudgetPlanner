@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { useEffect } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -15,28 +16,51 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import useDataStore from "@/hooks/useDataStore";
+import useEditStore from "@/hooks/useEditStore";
 const formSchema = z.object({
-  category: z.string(),
-  color:z.string(),
+  category: z.string().nonempty(),
+  color:z.string().nonempty(),
+  id:z.string()
 })
  
-export default function CategoryForm() {
+export default function CategoryForm({editingCategory}) {
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
           category: "",
-          color:""
+          color:"",
+          id:"-1",
         },
       })
 
-      const {register}= form;
+      const {register,reset}= form;
+      const {addCategory,editCategory} = useDataStore();
+      const {updateEditingCategory} = useEditStore();
+        useEffect(() => {
+          if (editingCategory) {
+            reset(editingCategory);
+          }
+        }, [editingCategory, reset]);
+      
+        function onSubmit(data) {
+          if (editingCategory) {
+            editCategory({ ...data, id: editingCategory.id })
+            updateEditingCategory(undefined);
+          } else {
+            addCategory(data);
+          }
+          reset({
+              category: "",
+              color:"",
+              id:"-1",
+          });
+        }
+      
 
-      function onSubmit(values) {
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
-        
-        console.log(values)
-      }
+      
+    
+      
   return (
     <div className="w-1/2 border-2 m-5 p-3 rounded-sm border-slate-900"> 
 
@@ -68,7 +92,7 @@ export default function CategoryForm() {
         </FormItem>
         
 
-        <Button type="submit">Submit</Button>
+        <Button type="submit">{editingCategory ? "Update Category":"Add category"}</Button>
       </form>
     </Form>
     </div>
