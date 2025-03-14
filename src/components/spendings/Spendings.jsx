@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { getFutureDateString, getTodayString } from "@/utils/helpers";
 import { Button } from "@/components/ui/button";
+import useEditStore from "@/hooks/useEditStore";
 import {
   Form,
   FormControl,
@@ -28,8 +29,10 @@ const formSchema = z.object({
   totalAmount: z.number().positive(),
 });
 
-export default function Spendings() {
-  const { addExpense } = useDataStore();
+export default function Spendings( {editingExpense} ) {
+  const { addExpense, editExpense } = useDataStore();
+  const { updateEditingExpense } = useEditStore();
+
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -38,6 +41,30 @@ export default function Spendings() {
         totalAmount: 1000,
     },
   });
+
+  const { reset, formState:{errors} } = form;
+  console.log(errors);
+
+  useEffect(() => {
+    if (editingExpense) {
+      reset(editingExpense);
+    }
+  }, [editingExpense, reset]);
+
+  function onSubmit(data) {
+    if (editingExpense) {
+      editExpense({ ...data, id: editingExpense.id });
+      updateEditingExpense(undefined);
+    } else {
+      addExpense(data);
+    }
+    reset({
+      id: "-1",
+      dateSpent: getTodayString(),
+      spendingCategory: 'Games',
+      totalAmount: 1000,
+    });
+  }
 
   function onSubmit(data) {
     addExpense(data);
@@ -93,8 +120,7 @@ export default function Spendings() {
             </FormItem>
           )}
         />
-
-        <Button type="submit">Submit</Button>
+        <Button type="submit">{editingExpense ? "Update expense" : "Add expense"}</Button>
       </form>
     </Form>
   );

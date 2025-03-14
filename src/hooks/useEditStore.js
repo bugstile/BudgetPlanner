@@ -1,4 +1,4 @@
-import { setEditingGoal, setEditingCategory } from "@/state/editSlice";
+import { setEditingGoal, setEditingCategory, setEditingExpense } from "@/state/editSlice";
 import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -19,10 +19,18 @@ const useEditStore = () => {
     [dispatch]
   );
 
+  const updateEditingExpense = useCallback(
+    (expense) => {
+      dispatch(setEditingExpense(expense));
+    },
+    [dispatch]
+  );
+
   return {
     ...editState,
     updateEditingGoal,
     updateEditingCategory,
+    updateEditingExpense,
   };
 };
 
