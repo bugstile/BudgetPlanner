@@ -40,7 +40,7 @@ The app should now be running at `http://localhost:5173/`
 ## 📑 **Project Resources**  
 
 - **Trello Board (Task Management):** [ReactDashboard Trello](https://trello.com/b/t6WihFUK/boilerroom-v9-11)  
-- **Project Documentation:** [Google Docs](https://docs.google.com/document/d/1H4eDuZfrzw68r0HXZTlOL5OC27io28WSMaKc7NazzCg/edit?tab=t.0)  
+- **Project requirements:** [Google Docs](https://docs.google.com/document/d/1H4eDuZfrzw68r0HXZTlOL5OC27io28WSMaKc7NazzCg/edit?tab=t.0)  
 
 ## 🎯 **Future Improvements**  
 
