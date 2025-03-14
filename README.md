@@ -28,7 +28,7 @@ A dynamic and interactive React dashboard project designed to enhance UX/UI skil
    npm run dev  
    ```  
 
-The app should now be running at `http://localhost:5173/` (or whichever port Vite is configured to).  
+The app should now be running at `http://localhost:5173/`
 
 ## 🛠️ **Tech Stack**  
 
