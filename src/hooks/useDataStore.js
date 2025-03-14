@@ -93,6 +93,7 @@ const useDataStore = () => {
 
   const editCategory = useCallback(
     (editedCategory) => {
+      console.log(editedCategory)
       const updatedCategories = [...dataState.categories].map((cat) =>
         editedCategory.id === cat.id ? editedCategory : cat
       );
