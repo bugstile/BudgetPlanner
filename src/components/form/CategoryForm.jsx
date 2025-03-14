@@ -15,6 +15,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import useDataStore from "@/hooks/useDataStore";
 const formSchema = z.object({
   category: z.string(),
   color:z.string(),
@@ -30,10 +31,10 @@ export default function CategoryForm() {
       })
 
       const {register}= form;
+      const {addCategory} = useDataStore();
 
       function onSubmit(values) {
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
+        addCategory(values);
         
         console.log(values)
       }

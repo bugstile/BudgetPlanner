@@ -1,7 +1,13 @@
+import useDataStore from "@/hooks/useDataStore"
 import CategoryForm from "../components/form/CategoryForm"
 import CategoryCard from "@/components/form/CategoryCard"
 
+
+
+
 export default function CategoriesPage() {
+  const {categories} = useDataStore();
+
   return (
     
     <div className="flex items-center flex-col w-full h-full">
@@ -13,22 +19,12 @@ export default function CategoriesPage() {
       <CategoryForm/>
 
       <div className="flex-row flex max-w-3xl flex-wrap">
-        <CategoryCard color="#000" category="Food"/>
-        <CategoryCard color="#000" category="Food"/>
-        <CategoryCard color="#000" category="Food"/>
-        <CategoryCard color="#000" category="Food"/>
-        <CategoryCard color="#000" category="Food"/>
-        <CategoryCard color="#000" category="Food"/>
-        <CategoryCard color="#000" category="Food"/>
-        <CategoryCard color="#000" category="Food"/>
-        <CategoryCard color="#000" category="Food"/>
-        <CategoryCard color="#000" category="Food"/>
-        <CategoryCard color="#000" category="Food"/>
-        <CategoryCard color="#000" category="Food"/>
-        <CategoryCard color="#000" category="Food"/>
-        <CategoryCard color="#000" category="Food"/>
+        {categories.map((category) => {
+          return <CategoryCard category={category} key={category.id}/>
+        })}
       </div>
       
     </div>
   )
+  
 }
