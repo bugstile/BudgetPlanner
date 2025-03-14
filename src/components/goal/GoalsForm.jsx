@@ -70,12 +70,10 @@ export default function GoalsForm({ editingGoal }) {
       addGoal(data);
     }
     reset({
-      defaultValues: {
-        id: "-1",
-        startDate: getTodayString(),
-        endDate: getFutureDateString(30),
-        target: 1000,
-      },
+      id: "-1",
+      startDate: getTodayString(),
+      endDate: getFutureDateString(30),
+      target: 1000,
     });
   }
 

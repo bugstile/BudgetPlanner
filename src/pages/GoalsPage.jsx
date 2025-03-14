@@ -6,7 +6,7 @@ export default function GoalsPage() {
   const { editingGoal } = useEditStore();
 
   return (
-    <div className="flex flex-col gap-y-12">
+    <div className="flex flex-col gap-y-12 p-8">
       <GoalsForm editingGoal={editingGoal} />
       <GoalList />
     </div>
