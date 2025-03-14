@@ -1,12 +1,14 @@
 import useDataStore from "@/hooks/useDataStore"
 import CategoryForm from "../components/form/CategoryForm"
 import CategoryCard from "@/components/form/CategoryCard"
+import useEditStore from "@/hooks/useEditStore";
 
 
 
 
 export default function CategoriesPage() {
   const {categories} = useDataStore();
+  const {editingCategory} = useEditStore();
 
   return (
     
@@ -16,7 +18,7 @@ export default function CategoriesPage() {
         <h1 className="font-semibold text-2xl">Categories</h1>
       </div>
 
-      <CategoryForm/>
+      <CategoryForm editingCategory={editingCategory} />
 
       <div className="flex-row flex max-w-3xl flex-wrap">
         {categories.map((category) => {

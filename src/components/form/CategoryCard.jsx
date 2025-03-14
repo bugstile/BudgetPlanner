@@ -5,9 +5,11 @@ import {
     CardTitle,
   } from "@/components/ui/card"
 import useDataStore from "@/hooks/useDataStore"
+import useEditStore from "@/hooks/useEditStore";
   
   export default function CategoryCard({category}){
-    const {editCategory,deleteCategory} = useDataStore();
+    const {deleteCategory} = useDataStore();
+    const {updateEditingCategory} = useEditStore();
     return( 
     <div className="min-w-24 max-w-32 h-min border-black border-2 rounded-lg flex flex-col items-center">
         <Card className="w-full flex flex-col p-1">
@@ -17,7 +19,7 @@ import useDataStore from "@/hooks/useDataStore"
                 <CardTitle className="text-slate-800">{category.category}</CardTitle>
             </CardContent>
             <CardFooter className="p-0">
-                <button className="bg-slate-300 px-2 text-xs py-0 my-0 rounded-md" onClick={()=>editCategory(category.id)}>Edit</button>
+                <button className="bg-slate-300 px-2 text-xs py-0 my-0 rounded-md" onClick={()=>updateEditingCategory(category)}>Edit</button>
                 <button className="bg-red-500 px-2 text-xs py-0 my-0 rounded-md" onClick={()=>deleteCategory(category.id)} >Delete</button>
             </CardFooter>
 

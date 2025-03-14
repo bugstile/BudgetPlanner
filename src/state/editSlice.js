@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   editingGoal: undefined,
+  editingCategory: undefined
 };
 
 const editSlice = createSlice({
@@ -11,9 +12,12 @@ const editSlice = createSlice({
     setEditingGoal: (state, action) => {
       state.editingGoal = action.payload;
     },
+    setEditingCategory: (state, action) => {
+      state.editingCategory = action.payload;
+    }
   },
 });
 
-export const { setEditingGoal } = editSlice.actions;
+export const { setEditingGoal, setEditingCategory } = editSlice.actions;
 
 export default editSlice.reducer;
