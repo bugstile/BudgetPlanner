@@ -1,23 +1,20 @@
-"use client";
-
+import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { getFutureDateString, getTodayString } from "@/utils/helpers";
+import { getTodayString } from "@/utils/helpers";
 import { Button } from "@/components/ui/button";
 import useEditStore from "@/hooks/useEditStore";
 import {
   Form,
-  FormControl,
-  FormDescription,
   FormField,
+  FormControl,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import useDataStore from "@/hooks/useDataStore";
-import { useEffect } from "react";
 
 const formSchema = z.object({
   spendingCategory: z.string().min(2, {
@@ -29,20 +26,30 @@ const formSchema = z.object({
   totalAmount: z.number().positive(),
 });
 
-export default function SpendingsForm( {editingExpense} ) {
+export default function SpendingsForm({ editingExpense }) {
   const { addExpense, editExpense } = useDataStore();
   const { updateEditingExpense } = useEditStore();
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    // Get categories from localStorage
+    const storedData = localStorage.getItem("react_dashboard_data_key");
+    if (storedData) {
+      const parsedData = JSON.parse(storedData);
+      setCategories(parsedData.categories || []);
+    }
+  }, []);
 
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-        spendingCategory: 'Games',
-        dateSpent: getTodayString(),
-        totalAmount: 1000,
+      spendingCategory: "Games",
+      dateSpent: getTodayString(),
+      totalAmount: 1000,
     },
   });
 
-  const { reset, formState:{errors} } = form;
+  const { reset } = form;
 
   useEffect(() => {
     if (editingExpense) {
@@ -60,7 +67,7 @@ export default function SpendingsForm( {editingExpense} ) {
     reset({
       id: "-1",
       dateSpent: getTodayString(),
-      spendingCategory: 'Games',
+      spendingCategory: "Games",
       totalAmount: 1000,
     });
   }
@@ -68,6 +75,7 @@ export default function SpendingsForm( {editingExpense} ) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        {/* Dropdown for Spending Category */}
         <FormField
           control={form.control}
           name="spendingCategory"
@@ -75,46 +83,62 @@ export default function SpendingsForm( {editingExpense} ) {
             <FormItem>
               <FormLabel>What did you spend money on?</FormLabel>
               <FormControl>
-                <Input placeholder="Games" {...field} />
+                <select
+                  {...field}
+                  className="border rounded p-2 w-full"
+                  value={field.value}
+                  onChange={(e) => field.onChange(e.target.value)}
+                >
+                  {categories.map((category) => (
+                    <option key={category.id} value={category.category}>
+                      {category.category}
+                    </option>
+                  ))}
+                </select>
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
 
+        {/* Total Amount Input */}
         <FormField
           control={form.control}
           name="totalAmount"
           render={({ field }) => (
             <FormItem>
-            <FormLabel>Total spending amount</FormLabel>
-            <FormControl>
-                <Input type="number"
-                placeholder="60$" {...field} 
-                onChange={(e) => {
+              <FormLabel>Total spending amount</FormLabel>
+              <FormControl>
+                <Input
+                  type="number"
+                  placeholder="60$"
+                  {...field}
+                  onChange={(e) => {
                     const value = e.target.value;
                     field.onChange(value ? parseFloat(value) : 0);
-                  }
-                }/>
-            </FormControl>
-            <FormMessage />
+                  }}
+                />
+              </FormControl>
+              <FormMessage />
             </FormItem>
-            )}
+          )}
         />
 
+        {/* Date Input */}
         <FormField
           control={form.control}
           name="dateSpent"
           render={({ field }) => (
             <FormItem>
-            <FormLabel>Date of expense</FormLabel>
-            <FormControl>
+              <FormLabel>Date of expense</FormLabel>
+              <FormControl>
                 <Input type="date" placeholder="Enter date" {...field} />
-            </FormControl>
-            <FormMessage />
+              </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />
+
         <Button type="submit">{editingExpense ? "Update expense" : "Add expense"}</Button>
       </form>
     </Form>
