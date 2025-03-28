@@ -47,19 +47,31 @@ export default function SpendingsPage() {
 
 
   return (
-    <div className="flex flex-col gap-y-12 px-8 py-4 pb-8 w-full">
-      <SpendingsForm editingExpense={editingExpense} />
+    <div className="flex items-center flex-col w-full h-full">
+      <div className="p-6 pt-12">
+        <h1 className="font-semibold text-4xl">Spendings</h1>
+      </div>
 
-      <GenericTable
-        data={expenses}
-        columns={columns}
-        onEdit={handleEditExpense} // Handle edit when a row is selected
-        onDelete={handleDeleteExpense} // Handle delete for a single expense
-        deleteAllSelected={handleDeleteSelectedExpenses} // Handle delete for selected rows
-        showCheckboxes={true}
-        enablePagination={true}
-        deleteCategory={deleteExpense} // Pass deleteExpense to GenericTable
-      />
+      <div className="rounded-sm border-none flex min-h-[350px] w-full justify-center p-10 items-center">
+        <div className="w-full bg-lighterBackground p-8">
+        <SpendingsForm editingExpense={editingExpense} />
+        </div>
+      </div>
+      <div className="rounded-sm border-none flex min-h-[350px] w-full justify-center p-10 pt-2 items-center">
+        <div className="w-full bg-lighterBackground p-8">
+          <GenericTable
+            data={expenses}
+            columns={columns}
+            onEdit={handleEditExpense} // Handle edit when a row is selected
+            onDelete={handleDeleteExpense} // Handle delete for a single expense
+            deleteAllSelected={handleDeleteSelectedExpenses} // Handle delete for selected rows
+            showCheckboxes={true}
+            enablePagination={true}
+            deleteCategory={deleteExpense}
+            deleteMessage="expenses" // Custom message for expenses
+          />
+        </div>
+      </div>
     </div>
   );
 }

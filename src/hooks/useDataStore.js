@@ -18,9 +18,8 @@ const useDataStore = () => {
     { category: "Dining/Restaurants", color: "hsl(var(--chart-5))", isDefault: true },
     { category: "Entertainment", color: "hsl(var(--chart-6))", isDefault: true },
     { category: "Healthcare", color: "hsl(var(--chart-7))", isDefault: true },
-    { category: "Savings", color: "hsl(var(--chart-8))", isDefault: true },
-    { category: "Debt Repayment", color: "hsl(var(--chart-9))", isDefault: true },
-    { category: "Education", color: "hsl(var(--chart-10))", isDefault: true }
+    { category: "Debt Repayment", color: "hsl(var(--chart-8))", isDefault: true },
+    { category: "Education", color: "hsl(var(--chart-9))", isDefault: true }
   ];
 
   // Set default categories if they haven't been set yet

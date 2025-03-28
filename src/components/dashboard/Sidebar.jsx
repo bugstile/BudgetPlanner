@@ -30,7 +30,7 @@ const LINKS = [
 export default function Sidebar() {
   return (
     <nav className="flex flex-col p-6 md:px-8 md:pt-12 w-full md:max-w-[250px] bg-lighterBackground text-input md:min-h-screen">
-      <ul className="flex items-center md:items-start md:flex-col gap-y-8 gap-x-4 pb-2 md:p-0 overflow-x-scroll md:overflow-x-auto">
+      <ul className="flex items-center md:items-start overflow-x-hidden md:flex-col gap-y-8 gap-x-4 pb-2 md:p-4 md:overflow-x-auto">
         {LINKS.map((link, index) => {
           return (
             <SidebarTab

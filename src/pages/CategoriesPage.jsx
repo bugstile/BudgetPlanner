@@ -45,27 +45,28 @@ export default function CategoriesPage() {
       console.log("No categories selected for deletion.");
     }
   };
-  
-  
 
   return (
     <div className="flex items-center flex-col w-full h-full">
-      <div className="p-4">
-        <h1 className="font-semibold text-2xl">Categories</h1>
+      <div className="p-6 pt-12">
+        <h1 className="font-semibold text-4xl">Categories</h1>
       </div>
 
       <CategoryForm editingCategory={editingCategory} />
 
-      <div className="flex min-h-[350px] w-full justify-center p-10 items-center">
-        <GenericTable
-          data={categories}
-          columns={columns}
-          onEdit={updateEditingCategory}
-          onDelete={handleDeleteCategory} // Single delete function
-          deleteAllSelected={handleDeleteAllSelected} // Bulk delete function
-          showCheckboxes={true}
-          deleteCategory={deleteCategory} // Pass deleteCategory to GenericTable
-        />
+      <div className="rounded-sm border-none flex min-h-[350px] w-full justify-center p-10 pt-2 items-center">
+        <div className="w-full bg-lighterBackground p-8">
+          <GenericTable
+            data={categories}
+            columns={columns}
+            onEdit={updateEditingCategory}
+            onDelete={handleDeleteCategory} // Single delete function
+            deleteAllSelected={handleDeleteAllSelected} // Bulk delete function
+            showCheckboxes={true}
+            deleteCategory={deleteCategory} // Pass deleteCategory to GenericTable
+            deleteMessage={'categories'}
+          />
+        </div>
       </div>
     </div>
   );

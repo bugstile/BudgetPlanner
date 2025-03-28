@@ -1,4 +1,4 @@
-import React from "react";
+import { React, useState } from "react";
 import {
   flexRender,
   getCoreRowModel,
@@ -23,6 +23,7 @@ import {
   TableHead,
 } from "@/components/ui/table";
 import { MoreHorizontal } from "lucide-react";
+import ConfirmationDialog from "../form/ConfirmationDialog";
 
 export default function GenericTable({
   data,
@@ -33,7 +34,11 @@ export default function GenericTable({
   showCheckboxes = false,
   enablePagination = true,
   deleteCategory, // The delete function passed dynamically
+  deleteMessage 
 }) {
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false); // State to control the confirmation dialog
+  const [selectedCategoryIds, setSelectedCategoryIds] = useState([]); // Store selected category IDs
+
   const table = useReactTable({
     data,
     columns,
@@ -45,33 +50,41 @@ export default function GenericTable({
   // Gather selected rows across all pages
   const selectedRowIds = table.getSelectedRowModel().rows.map((row) => row.original.id.toString());
 
+  // Handle bulk delete action (trigger confirmation dialog)
+  const handleDeleteAllSelected = () => {
+    console.log("Selected Row IDs before deletion:", selectedRowIds); // Debugging log
 
-// Handle bulk delete action
-const handleDeleteAllSelected = () => {
-  console.log("Selected Row IDs before deletion:", selectedRowIds); // Debugging log
+    if (selectedRowIds.length > 0) {
+      // Map selected row IDs to actual category IDs
+      const selectedCategoryIds = selectedRowIds.map((rowId) => {
+        const selectedRow = table.getRowModel().rows.find(
+          (row) => row.original.id.toString() === rowId.toString()
+        );
+        return selectedRow ? selectedRow.original.id : null;
+      }).filter(Boolean); // Filter out any null values
 
-  if (selectedRowIds.length > 0) {
-    // Map selected row IDs to actual category IDs
-    const selectedCategoryIds = selectedRowIds.map(rowId => {
-      const selectedRow = table.getRowModel().rows.find(row => row.original.id.toString() === rowId.toString());
-      return selectedRow ? selectedRow.original.id : null;
-    }).filter(Boolean); // Filter out any null values
+      console.log("Selected category IDs for deletion:", selectedCategoryIds); // Debugging log
 
-    console.log("Selected category IDs for deletion:", selectedCategoryIds); // Debugging log
+      // Set selected category IDs to state and show confirmation dialog
+      setSelectedCategoryIds(selectedCategoryIds);
+      setShowDeleteConfirmation(true);
+    } else {
+      console.log("No rows selected."); // Add debug log if no rows are selected
+    }
+  };
 
-    // Call deleteCategory with the correct category IDs
-    deleteCategory(selectedCategoryIds);
+  // Handle deletion after confirmation
+  const handleConfirmDelete = () => {
+    if (selectedCategoryIds.length > 0) {
+      deleteCategory(selectedCategoryIds); // Call deleteCategory with selected category IDs
+      setShowDeleteConfirmation(false); // Close the dialog after deletion
+    }
+  };
 
-    // Reset the selected row IDs after deletion
-    table.setRowSelection({});
-  } else {
-    console.log("No rows selected."); // Add debug log if no rows are selected
-  }
-};
-
-
-  
-  
+  // Cancel the deletion (close dialog without deleting)
+  const handleCancelDelete = () => {
+    setShowDeleteConfirmation(false); // Close the dialog without deleting
+  };
 
   return (
     <div className="w-full">
@@ -128,7 +141,7 @@ const handleDeleteAllSelected = () => {
                   <TableCell>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
+                        <Button variant="ghost" className="h-8 w-8 p-0 noTransformTrigger">
                           <MoreHorizontal />
                         </Button>
                       </DropdownMenuTrigger>
@@ -155,6 +168,17 @@ const handleDeleteAllSelected = () => {
         </Table>
       </div>
 
+      {/* Confirmation Dialog for Delete All Selected */}
+      <ConfirmationDialog
+        open={showDeleteConfirmation}
+        onConfirm={handleConfirmDelete}
+        onCancel={handleCancelDelete}
+        message={`This action will permanently delete all selected ${deleteMessage}. Are you sure?`}
+        confirmVariant="destructive"   // Custom variant for the confirm button
+        cancelVariant="outline"       // Custom variant for the cancel button
+      />
+
+      
       {/* Buttons and Pagination */}
       <div className="flex items-center justify-between space-x-2 py-4">
         {/* Row Selection Info and Delete All Button */}

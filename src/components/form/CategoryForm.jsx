@@ -3,9 +3,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useEffect } from "react";
-import { FaPalette } from "react-icons/fa"; // Importing an icon for the color picker
-
+import { useEffect, useRef } from "react";
+import { FaPalette } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -46,6 +45,9 @@ const formSchema = z.object({
 });
 
 export default function CategoryForm({ editingCategory }) {
+  // Create a ref for the input field
+  const inputRef = useRef(null);
+
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -64,6 +66,14 @@ export default function CategoryForm({ editingCategory }) {
 
   useEffect(() => {
     if (editingCategory) {
+      // Delay focus to ensure the DOM is updated
+      setTimeout(() => {
+        const categoryInput = document.getElementById('categoryField');
+        if (categoryInput) {
+          categoryInput.focus();
+          categoryInput.select(); // Select the text inside
+        }
+      }, 175);
       reset(editingCategory);
     }
   }, [editingCategory, reset]);
@@ -94,7 +104,15 @@ export default function CategoryForm({ editingCategory }) {
                 <FormItem>
                   <FormLabel>Category</FormLabel>
                   <FormControl>
-                    <Input placeholder="Category" {...field} />
+                    <Input
+                      id="categoryField"
+                      {...register("category")} // Register the input field with the form
+                      ref={(e) => {
+                        register("category").ref(e); // Combine register ref with inputRef
+                        inputRef.current = e; // Assign ref to inputRef for focus handling
+                      }}
+                      placeholder="Groceries"
+                    />
                   </FormControl>
                   <FormDescription>
                     Write the name of your category. This will be used to split up your spending.

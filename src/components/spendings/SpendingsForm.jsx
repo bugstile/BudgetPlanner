@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { getTodayString } from "@/utils/helpers";
 import { Button } from "@/components/ui/button";
-import { Select, SelectTrigger, SelectContent, SelectItem, SelectLabel } from "@/components/ui/select"; // Import your custom Select component
+import { Select, SelectTrigger, SelectContent, SelectItem } from "@/components/ui/select";
 import useEditStore from "@/hooks/useEditStore";
 import {
   Form,
@@ -17,10 +17,11 @@ import {
 import { Input } from "@/components/ui/input";
 import useDataStore from "@/hooks/useDataStore";
 
+// Updated Schema for Validation
 const formSchema = z.object({
-  spendingCategory: z.string().min(2, {
-    message: "Spending category must be at least 2 characters.",
-  }),
+  spendingCategory: z
+    .string()
+    .refine(value => value !== "", { message: "Spending category must be selected." }), // Ensure spendingCategory is selected
   dateSpent: z.string().refine((date) => !isNaN(Date.parse(date)), {
     message: "Date of expense must be a valid date",
   }),
@@ -44,7 +45,7 @@ export default function SpendingsForm({ editingExpense }) {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      spendingCategory: "Games",
+      spendingCategory: "", // Empty value shows placeholder initially
       dateSpent: getTodayString(),
       totalAmount: 1000,
     },
@@ -54,21 +55,28 @@ export default function SpendingsForm({ editingExpense }) {
 
   useEffect(() => {
     if (editingExpense) {
-      reset(editingExpense);
+      reset(editingExpense); // Pre-fill the form with the editing expense data
     }
   }, [editingExpense, reset]);
 
   function onSubmit(data) {
+    // Only proceed if the spendingCategory is valid
+    if (data.spendingCategory === "") {
+      return;
+    }
+
     if (editingExpense) {
       editExpense({ ...data, id: editingExpense.id });
-      updateEditingExpense(undefined);
+      updateEditingExpense(undefined); // Reset editing state
     } else {
       addExpense(data);
     }
+
+    // Reset the form, forcing category selection again
     reset({
       id: "-1",
       dateSpent: getTodayString(),
-      spendingCategory: "Games",
+      spendingCategory: "", // Reset value to empty, showing the placeholder
       totalAmount: 1000,
     });
   }
@@ -86,7 +94,7 @@ export default function SpendingsForm({ editingExpense }) {
               <FormControl>
                 <Select {...field} value={field.value} onValueChange={field.onChange}>
                   <SelectTrigger>
-                    {field.value || "Select a category"} {/* Display selected value or placeholder */}
+                    {field.value === "" ? "Select a category" : field.value} {/* Placeholder when no value is selected */}
                   </SelectTrigger>
                   <SelectContent>
                     {categories.map((category) => (

@@ -5,12 +5,25 @@ import IncomeForm from "../components/overview/IncomeForm"
 
 export default function OverviewPage() {
   return (
-    <div className="flex flex-col justify-center items-center gap-y-10 h-screen">
-      <h1 className="text-4xl">React Dashboard</h1>
-      <IncomeForm/>
-      <Button>Click me</Button>
-      <PieChartCard />
-      <BarChartInteractive /> {/* Pass the current month as a prop */}
+    <div className="flex items-center flex-col w-full h-full">
+      <div className="p-6 pt-12">
+        <h1 className="font-semibold text-4xl">Overview</h1>
+      </div>
+      <div className="rounded-sm border-none flex min-h-[350px] w-full justify-center p-10 pt-2 items-center">
+        <div className="w-full bg-lighterBackground p-8 mt-8">
+          <IncomeForm/>
+        </div>
+      </div>
+      <div className="rounded-sm border-none flex min-h-[350px] w-full justify-center p-10 pt-2 items-center">
+        <div className="w-full bg-lighterBackground p-8">
+          <PieChartCard />
+        </div>
+      </div>
+      <div className="rounded-sm border-none flex min-h-[350px] w-full justify-center p-10 pt-2 items-center">
+        <div className="w-full bg-lighterBackground p-8">
+          <BarChartInteractive />
+        </div>
+      </div>
     </div>
   )
 }
