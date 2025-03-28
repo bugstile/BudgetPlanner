@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import useDataStore from "@/hooks/useDataStore";
+import CatButton from "../ui/cat-button";
 
 // Updated Schema for Validation
 const formSchema = z.object({
@@ -147,8 +148,10 @@ export default function SpendingsForm({ editingExpense }) {
             </FormItem>
           )}
         />
-
-        <Button type="submit">{editingExpense ? "Update expense" : "Add expense"}</Button>
+        <div className="flex flex-row justify-between items-center">
+          <Button type="submit">{editingExpense ? "Update expense" : "Add expense"}</Button>
+          <CatButton/>
+        </div>
       </form>
     </Form>
   );

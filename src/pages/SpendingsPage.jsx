@@ -54,7 +54,7 @@ export default function SpendingsPage() {
 
       <div className="rounded-sm border-none flex min-h-[350px] w-full justify-center p-10 items-center">
         <div className="w-full bg-lighterBackground p-8">
-        <SpendingsForm editingExpense={editingExpense} />
+          <SpendingsForm editingExpense={editingExpense} />
         </div>
       </div>
       <div className="rounded-sm border-none flex min-h-[350px] w-full justify-center p-10 pt-2 items-center">
