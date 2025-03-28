@@ -4,63 +4,82 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
+    --background: 210, 100%, 2%;
+    --lighter-background: 210, 25%, 7%;
+    --foreground: 0, 7%, 94%;
+    --card: 210, 25%, 7%;
+    --card-foreground: 0, 7%, 94%;
+    --popover: 210, 25%, 7%;
+    --popover-foreground: 0, 0%, 100%;
+    --primary: 48, 100%, 50%;
+    --primary-foreground: 210, 100%, 2%;
+    --primary-hover: 48, 100%, 40%;
+    --primary-hover-foreground: 0, 0%, 100%;
+    --secondary: 240, 74%, 70%;
     --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --secondary-hover: 240, 83%, 60%;
+    --secondary-hover-foreground: 0, 0%, 100%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
     --accent: 210 40% 96.1%;
     --accent-foreground: 222.2 47.4% 11.2%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --destructive: 351, 100%, 55%; 
+    --destructive-foreground: 210, 100%, 2%;
+    --destructive-hover: 351, 100%, 32%;
+    --destructive-hover-foreground: 0, 7%, 94%;
+    --border: 210, 25%, 20%;
+    --input: 0, 7%, 94%;
+    --ring: 48, 100%, 50%;
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
-    --radius: 0.5rem
-  }
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%
+    --chart-6: 211, 100%, 70%;
+    --chart-7: 240, 26%, 68%;
+    --chart-8: 212, 60%, 95%;
+    --chart-9: 307, 21%, 49%;
+    --chart-10: 75, 86%, 83%;
+    --chart-11: 43, 100%, 52%;
+    --chart-12: 51, 58%, 82%;
+    --chart-13: 226, 71%, 83%;
+    --chart-14: 53, 98%, 65%;
+    --chart-15: 0, 0%, 98%;
+    --radius: 0.5em;
+
+/* 
+    --lighter-background-color: hsl(210, 25%, 7%);
+    --text-color: 0, 7%, 94%;
+    --background-color: hsl(210, 100%, 2%);
+    --secondary-button-color: hsl(240, 74%, 70%);
+    --secondary-button-text-color: hsl(210, 100%, 2%);
+    --secondary-button-hover-color: hsl(240, 83%, 60%);
+    --secondary-button-hover-text-color: hsl(0, 0%, 100%); */
+
+
+    /* Color scheme for website
+    --lighter-background-color: #0d1117;
+    --text-color: #f1efef;
+    --background-color: #010409;
+    --secondary-button-color:#8B80F9;
+    --secondary-button-text-color:var(--background-color);
+    --secondary-button-hover-color:#5E50F7;
+    --secondary-button-hover-text-color:white;
+    --primary-button-color:#FFC31F;
+    --primary-button-text-color:black;
+    --primary-button-hover-color:#CC9600;
+    --primary-button-hover-text-color:white; 
+    --input-background-color: var(--text-color);
+    --input-text-color:var(--background-color);
+    --input-text-border-hover-color:var(--primary-button-color);
+    --movie-background-color:var(--lighter-background-color);
+    --movie-text-color:var(--text-color); */
   }
 }
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border outline-ring;
   }
   body {
     @apply bg-background text-foreground;

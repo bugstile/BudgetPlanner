@@ -7,12 +7,12 @@ export default function SpendingsCard({ expense }) {
   const { updateEditingExpense } = useEditStore();
 
   return (
-    <div className="flex flex-col gap-y-2 p-4 shadow-md rounded-md bg-slate-100">
+    <div className="flex flex-col gap-y-2 p-4 shadow-md rounded-md bg-card">
       <p>
         <span className="font-semibold">{expense.spendingCategory}</span> -&nbsp;
         <span className="font-semibold">{expense.dateSpent}</span>
       </p>
-      <p className="font-medium text-gray-600">${expense.totalAmount}</p>
+      <p className="font-medium text-card-foreground">${expense.totalAmount}</p>
       <div className="mt-8">
         <Button onClick={() => deleteExpense(expense.id)} variant="destructive">
           Delete

@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { getTodayString } from "@/utils/helpers";
 import { Button } from "@/components/ui/button";
+import { Select, SelectTrigger, SelectContent, SelectItem, SelectLabel } from "@/components/ui/select"; // Import your custom Select component
 import useEditStore from "@/hooks/useEditStore";
 import {
   Form,
@@ -83,18 +84,18 @@ export default function SpendingsForm({ editingExpense }) {
             <FormItem>
               <FormLabel>What did you spend money on?</FormLabel>
               <FormControl>
-                <select
-                  {...field}
-                  className="border rounded p-2 w-full"
-                  value={field.value}
-                  onChange={(e) => field.onChange(e.target.value)}
-                >
-                  {categories.map((category) => (
-                    <option key={category.id} value={category.category}>
-                      {category.category}
-                    </option>
-                  ))}
-                </select>
+                <Select {...field} value={field.value} onValueChange={field.onChange}>
+                  <SelectTrigger>
+                    {field.value || "Select a category"} {/* Display selected value or placeholder */}
+                  </SelectTrigger>
+                  <SelectContent>
+                    {categories.map((category) => (
+                      <SelectItem key={category.id} value={category.category}>
+                        {category.category}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </FormControl>
               <FormMessage />
             </FormItem>

@@ -7,12 +7,12 @@ export default function GoalCard({ goal }) {
   const { updateEditingGoal } = useEditStore();
 
   return (
-    <div className="flex flex-col gap-y-2 p-4 shadow-md rounded-md bg-slate-100">
+    <div className="flex flex-col gap-y-2 p-4 shadow-md rounded-md bg-card">
       <p>
         <span className="font-semibold">{goal.startDate}</span> -&nbsp;
         <span className="font-semibold">{goal.endDate}</span>
       </p>
-      <p className="font-medium text-gray-600">${goal.target}</p>
+      <p className="font-medium card-foreground">${goal.target}</p>
       <div className="flex justify-between mt-8">
         <Button onClick={() => deleteGoal(goal.id)} variant="destructive">
           Delete
