@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import {
   flexRender,
@@ -8,113 +6,72 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ArrowUpDown, MoreHorizontal } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
   Table,
   TableBody,
   TableCell,
-  TableHead,
   TableHeader,
   TableRow,
+  TableHead,
 } from "@/components/ui/table";
+import { MoreHorizontal } from "lucide-react";
 
-export default function GenericTable({ categories, deleteCategory, updateEditingCategory }) {
-  const columns = [
-    {
-      id: "select",
-      header: ({ table }) => (
-        <Checkbox
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && "indeterminate")
-          }
-          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-          aria-label="Select all"
-        />
-      ),
-      cell: ({ row }) => (
-        <Checkbox
-          checked={row.getIsSelected()}
-          onCheckedChange={(value) => row.toggleSelected(!!value)}
-          aria-label="Select row"
-        />
-      ),
-      enableSorting: false,
-      enableHiding: false,
-    },
-    {
-      accessorKey: "category",
-      header: "Category",
-      cell: ({ row }) => <div>{row.getValue("category")}</div>,
-    },
-    {
-      accessorKey: "color",
-      header: "Color",
-      cell: ({ row }) => {
-        const color = row.getValue("color");
-        return color ? (
-          <div style={{ backgroundColor: color, width: "100px", height: "25px" }} />
-        ) : (
-          <div style={{ width: "100px", height: "25px", backgroundColor: "transparent" }}>No Color</div>
-        );
-      },
-    },
-    {
-      id: "actions",
-      enableHiding: false,
-      cell: ({ row }) => {
-        const category = row.original;
-
-        return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuItem onClick={() => updateEditingCategory(category)}>
-                Edit
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => {
-                console.log(`Deleting category with ID: ${category.id}`);
-                deleteCategory(category.id);
-              }}>
-                Delete
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        );
-      },
-    },
-  ];
-
+export default function GenericTable({
+  data,
+  columns,
+  onEdit,
+  onDelete,
+  deleteAllSelected,
+  showCheckboxes = false,
+  enablePagination = true,
+  deleteCategory, // The delete function passed dynamically
+}) {
   const table = useReactTable({
-    data: categories,
+    data,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
   });
 
-  // Function to delete all selected categories
-  const deleteAllSelected = () => {
-    const selectedRowIds = table.getSelectedRowModel().rows.map(row => row.original.id);
-    if (selectedRowIds.length > 0) {
-      deleteCategory(selectedRowIds); // Pass the array of IDs to delete
-    }
-  };
+  // Gather selected rows across all pages
+  const selectedRowIds = table.getSelectedRowModel().rows.map((row) => row.original.id.toString());
+
+
+// Handle bulk delete action
+const handleDeleteAllSelected = () => {
+  console.log("Selected Row IDs before deletion:", selectedRowIds); // Debugging log
+
+  if (selectedRowIds.length > 0) {
+    // Map selected row IDs to actual category IDs
+    const selectedCategoryIds = selectedRowIds.map(rowId => {
+      const selectedRow = table.getRowModel().rows.find(row => row.original.id.toString() === rowId.toString());
+      return selectedRow ? selectedRow.original.id : null;
+    }).filter(Boolean); // Filter out any null values
+
+    console.log("Selected category IDs for deletion:", selectedCategoryIds); // Debugging log
+
+    // Call deleteCategory with the correct category IDs
+    deleteCategory(selectedCategoryIds);
+
+    // Reset the selected row IDs after deletion
+    table.setRowSelection({});
+  } else {
+    console.log("No rows selected."); // Add debug log if no rows are selected
+  }
+};
+
+
+  
+  
 
   return (
     <div className="w-full">
@@ -123,30 +80,73 @@ export default function GenericTable({ categories, deleteCategory, updateEditing
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
+                {showCheckboxes && (
+                  <TableHead>
+                    <Checkbox
+                      checked={
+                        table.getIsAllPageRowsSelected() ||
+                        (table.getIsSomePageRowsSelected() && "indeterminate")
+                      }
+                      onCheckedChange={(value) =>
+                        table.toggleAllPageRowsSelected(!!value)
+                      }
+                      aria-label="Select all"
+                    />
+                  </TableHead>
+                )}
                 {headerGroup.headers.map((header) => (
                   <TableHead key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(header.column.columnDef.header, header.getContext())}
+                    {flexRender(header.column.columnDef.header, header.getContext())}
                   </TableHead>
                 ))}
+                {/* Actions column (always visible) */}
+                <TableHead>Actions</TableHead>
               </TableRow>
             ))}
           </TableHeader>
+
           <TableBody>
             {table.getRowModel().rows.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow key={row.id}>
+                  {showCheckboxes && (
+                    <TableCell>
+                      <Checkbox
+                        checked={row.getIsSelected()}
+                        onCheckedChange={(value) => row.toggleSelected(!!value)}
+                        aria-label="Select row"
+                      />
+                    </TableCell>
+                  )}
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}
+
+                  {/* Actions Dropdown for each row */}
+                  <TableCell>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" className="h-8 w-8 p-0">
+                          <MoreHorizontal />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem onClick={() => onEdit(row.original)}>
+                          Edit
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => onDelete(row.original.id)}>
+                          Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
                 </TableRow>
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center">
+                <TableCell colSpan={columns.length + (showCheckboxes ? 2 : 1)} className="h-24 text-center">
                   No results.
                 </TableCell>
               </TableRow>
@@ -155,20 +155,41 @@ export default function GenericTable({ categories, deleteCategory, updateEditing
         </Table>
       </div>
 
+      {/* Buttons and Pagination */}
       <div className="flex items-center justify-between space-x-2 py-4">
-        <Button variant="destructive" size="sm" onClick={deleteAllSelected} disabled={table.getSelectedRowModel().rows.length === 0}>
-          Delete All Selected
-        </Button>
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s) selected.
-        </div>
+        {/* Row Selection Info and Delete All Button */}
+        {showCheckboxes && (
+          <div className="flex items-center space-x-2">
+            <div className="text-sm text-muted-foreground">
+              {table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s) selected.
+            </div>
+            <Button
+              variant="destructive"
+              size="sm"
+              onClick={handleDeleteAllSelected}
+              disabled={selectedRowIds.length === 0}
+            >
+              Delete All Selected
+            </Button>
+          </div>
+        )}
+
+        {/* Pagination */}
         <div className="space-x-2">
-          <Button variant="outline" size="sm" onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
+          <button
+            className="inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground h-8 rounded-md px-3 text-xs"
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
             Previous
-          </Button>
-          <Button variant="outline" size="sm" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
+          </button>
+          <button
+            className="inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground h-8 rounded-md px-3 text-xs"
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+          >
             Next
-          </Button>
+          </button>
         </div>
       </div>
     </div>

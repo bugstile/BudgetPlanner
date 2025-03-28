@@ -31,16 +31,35 @@ const useDataStore = () => {
     if (!parsedData || !parsedData.categories || parsedData.categories.length === 0) {
       const uniqueCategories = defaultCategories.map((category, index) => ({
         ...category,
-        id: (index + 1).toString(), // Assign unique IDs based on index
+        id: index.toString(), // Use index as ID, ensuring it is unique
       }));
       dispatch(setCategories(uniqueCategories));
     }
   }, [dispatch]);
 
   const deleteCategory = useCallback((categoryIds) => {
-    const filteredCategories = dataState.categories.filter((cat) => !categoryIds.includes(cat.id));
+    console.log("Selected IDs for deletion:", categoryIds); // Debugging log
+  
+    // Ensure categoryIds is always an array, even if only one ID is passed
+    const idsToDelete = Array.isArray(categoryIds) ? categoryIds : [categoryIds];
+    console.log("Converted IDs for deletion:", idsToDelete); // Debugging log
+  
+    // Filter out categories whose IDs are in the idsToDelete array
+    const filteredCategories = dataState.categories.filter((cat) => {
+      const isDeleted = idsToDelete.includes(cat.id.toString()); // Ensure string comparison
+      console.log(`Checking category with id ${cat.id}: ${isDeleted ? 'Delete' : 'Keep'}`); // Debugging log
+      return !isDeleted; // Keep only the categories that are NOT in idsToDelete
+    });
+  
+    console.log("Filtered categories after deletion:", filteredCategories); // Debugging log
+  
+    // Update categories in the store
     dispatch(setCategories(filteredCategories));
   }, [dispatch, dataState]);
+  
+  
+  
+  
   
   const addCategory = useCallback(
     (category) => {
@@ -93,13 +112,18 @@ const useDataStore = () => {
     [dispatch, dataState]
   );
 
-  const deleteExpense = useCallback(
-    (expenseId) => {
-      const filteredExpenses = dataState.expenses.filter((exp) => exp.id !== expenseId);
-      dispatch(setExpenses(filteredExpenses));
-    },
-    [dispatch, dataState]
+  const deleteExpense = useCallback((expenseIds) => {
+    // Ensure expenseIds is always an array, even if only one ID is passed
+    const idsToDelete = Array.isArray(expenseIds) ? expenseIds : [expenseIds];
+  
+    const filteredExpenses = dataState.expenses.filter(
+      (expense) => !idsToDelete.includes(expense.id)
+    );
+  
+    dispatch(setExpenses(filteredExpenses)); // Dispatch the updated expenses list
+    }, [dispatch, dataState]
   );
+  
 
   const addGoal = useCallback(
     (goal) => {

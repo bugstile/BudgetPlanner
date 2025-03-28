@@ -34,7 +34,7 @@ export default function BarChartInteractive({ month }) {
       const data = localData.expenses.map(expense => ({
         date: expense.dateSpent,
         category: expense.spendingCategory,
-        totalAmount: expense.totalAmount,
+        spent: expense.totalAmount,
       }))
 
       // Filter by the specified month if provided
@@ -46,9 +46,9 @@ export default function BarChartInteractive({ month }) {
       const groupedData = filteredData.reduce((acc, curr) => {
         const existing = acc.find(item => item.category === curr.category)
         if (existing) {
-          existing.totalAmount += curr.totalAmount
+          existing.spent += curr.spent
         } else {
-          acc.push({ category: curr.category, totalAmount: curr.totalAmount })
+          acc.push({ category: curr.category, spent: curr.spent })
         }
         return acc
       }, [])
@@ -93,9 +93,9 @@ export default function BarChartInteractive({ month }) {
               tickMargin={8}
             />
             <Tooltip
-              content={<ChartTooltipContent nameKey="totalAmount" />}
+              content={<ChartTooltipContent nameKey="spent" />}
             />
-            <Bar dataKey="totalAmount">
+            <Bar dataKey="spent">
               {chartData.map((entry) => (
                 <Cell key={entry.category} fill={colors[entry.category] || '#000'} />
               ))}
