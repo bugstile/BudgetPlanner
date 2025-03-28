@@ -100,7 +100,7 @@ Here's an example of how you can document your `GenericTable.jsx` component for 
 ## 🚀 **Highlighted feature**  
 
 
-## `GenericTable.jsx` — Dynamic Data Table Component
+## `GenericTable.jsx` — Dynamic Data Table Component (built on shadCN implementation)
 
 The `GenericTable` component is a highly flexible and reusable table implementation that can display data with sorting, pagination, row selection (checkboxes), and actions like editing and deleting. It supports dynamic content, allowing users to manage and manipulate data in a straightforward, user-friendly way.
 
