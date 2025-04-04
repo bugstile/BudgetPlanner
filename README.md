@@ -208,7 +208,3 @@ const handleDeleteAllSelected = (selectedIds) => {
 
 ### Customization:
 You can easily customize the table's appearance, the actions, and the data handling logic by adjusting the props passed to the `GenericTable` component. The component is designed to be flexible and reusable, allowing for easy integration into any React project.
-
----
-
-This documentation provides a comprehensive overview of your `GenericTable.jsx` component, explaining the purpose, functionality, and how it fits within your project. It also includes an example usage and details about how to customize and extend the component.
